@@ -1,5 +1,7 @@
 package com.example.playermedia;
 
+//13 июня. Регулировка громкости. ДФ -- добавлена библиотека
+import javafx.beans.InvalidationListener;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
@@ -95,6 +97,13 @@ public class ControllerName {
 
     }
 
+    //13 июня. Регулировка громкости. ДФ -- вызов метода
+    //volume связан с изменением в fxml файле
+    @FXML
+    void volume(MouseEvent event){
+        volume();
+    }
+    
     @FXML
     void initialize() {
         menu.setOnMouseClicked(MouseEvent -> {
@@ -151,6 +160,17 @@ public class ControllerName {
         isPlaying = false;
     }
 
+    //13 июня. Регулировка громкости. ДФ -- метод
+    private void volume() {
+        volumeSlider.setValue(mediaPlayer.getVolume() * 100);
+        volumeSlider.valueProperty().addListener(new InvalidationListener() {
+            @Override
+            public void invalidated(Observable observable) {
+                mediaPlayer.setVolume(volumeSlider.getValue() / 100);
+            }
+        });
+    }
+    
     public void beginTimer() {
         timer = new Timer();
         task = new TimerTask() {
